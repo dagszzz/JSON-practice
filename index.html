@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!--<script>
+        fetch('http://myjson.dit.upm.es/api/bins/drid')
+            .then(response => response.json())
+            .then(data => console.log(data));
+    </script>
+    -->
+
+    <!--<script>
+        const json = {first:"christian", last:"fausto", count:0};
+        console.log(json);
+        const str = JSON.stringify(json);
+        console.log(str);
+        const json1 = JSON.parse(str);
+        console.log(json1);
+        json1.count++;
+        console.log(json1);
+        const str1 = JSON.stringify(json1);
+        console.log(str1);
+    </script>
+    -->
+
+    <!--
+    <script>
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    console.log(xhr);
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                let temp = JSON.parse(xhr.responseText);
+                console.log(temp.results);
+        }
+    }
+                xhr.onprogress = function () {
+                    console.log('loading');
+    }
+                xhr.onload = function () {
+                    console.log('done');
+    }
+                xhr.open('get', 'http://myjson.dit.upm.es/api/bins/drid');
+                xhr.send();
+    </script>
+    -->
+
+    <!--
+    <div class="output1"></div>
+    <div class="output2"></div>
+    <script>
+        const output1 = document.querySelector('.output1');
+        const output2 = document.querySelector('.output2');
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            //console.log(xhr);
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                //console.log(xhr.responseText);
+                let temp = JSON.parse(xhr.responseText);
+                console.log(temp.results[0].name.first);
+                for(let x=0;x<temp.results.length;x++){
+                    let person = temp.results[x];
+                    output1.innerHTML += `<img src="${person.picture.thumbnail}"> 
+                    ${person.name.first} 
+                    ${person.name.last}
+                    ${person.email} <br>`;
+                }
+                //
+                //output2.textContent = `${temp.results[1].name.last}`;
+            }
+        }
+        xhr.onprogress = function () {
+            // console.log('loading');
+        }
+        xhr.onload = function () {
+            //console.log('done');
+        }
+        xhr.open('get', 'http://myjson.dit.upm.es/api/bins/drid');
+        xhr.send();
+    </script>
+    -->
+
+    <!--
+    <div class="output1"></div>
+    <div class="output2"></div>
+    <script>
+        const output1 = document.querySelector('.output1');
+        const output2 = document.querySelector('.output2');
+        const url = 'https://randomuser.me/api/?results=10';
+        fetchData();
+
+        function fetchData() {
+            fetch(url).then(function (rep) {
+                return rep.json()
+            }).then(function (data) {
+                console.log(data.results);
+                data.results.forEach(function (person) {
+                    console.log(person);
+                    output1.innerHTML += `${person.name.first} ${person.name.last} <img src="${person.picture.thumbnail}"><br>`;
+                })
+            })
+        }
+    </script>
+    -->
+
+    <!--
+    <div class="output1"></div>
+    <div class="output2"></div>
+    <script>
+        const output1 = document.querySelector('.output1');
+        const output2 = document.querySelector('.output2');
+        const url = 'https://randomuser.me/api/?results=10';
+        fetchData();
+
+        function fetchData() {
+            fetch(url).then(function (rep) {
+                return rep.json()
+            }).then(function (data) {
+                console.log(data.results);
+                let people = data.results.map(function (el) {
+                    console.log(el);
+                    return el.name.first + ' ' + el.name.last;
+                })
+                console.log(people);
+                people.forEach(function (person) {
+                    console.log(person);
+                    output1.innerHTML += `${person}<br>`;
+                })
+            })
+        }
+    </script>
+    -->
+
+   First:
+<input type="text" name="first" value="Laurence">
+<br>Last:
+<input type="text" name="last" value="Svekis">
+<button class="adder">Add</button>
+<button class="lister">List</button>
+<div class="message"></div>
+<script>
+    const btn = document.querySelector('.adder');
+    const first = document.querySelector('input[name=first]');
+    const last = document.querySelector('input[name=last]');
+    const lister = document.querySelector('.lister');
+    const message = document.querySelector('.message');
+    lister.addEventListener('click', getter);
+    btn.addEventListener('click', adder);
+
+    function getter() {
+        fetch('http://localhost:3000/people').then(function (rep) {
+            return rep.json()
+        }).then(function (data) {
+            output(data);
+        })
+    }
+
+    function output(data) {
+        message.innerHTML = "";
+        data.forEach(function (el, index) {
+            console.log(el);
+            let div = document.createElement('div');
+            div.innerHTML = `${el.id} <input type="text" value="${el.first}">`;
+            div.innerHTML += `<input type="text" value="${el.last}"><button>Update</button>`;
+            div.addEventListener('click', function () {
+                let temps = div.querySelectorAll('input');
+                let updater = div.querySelector('button');
+                updater.addEventListener('click', function () {
+                    updateData(el.id, temps[0].value, temps[1].value);
+                })
+            })
+            message.appendChild(div);
+        })
+    }
+
+    function updateData(id, first, last) {
+        console.log(id, first, last);
+        fetch('http://localhost:3000/people/' + id, {
+            method: 'put'
+            , body: JSON.stringify({
+                first: first
+                , last: last
+            })
+            , headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (res) {
+            return res.text();
+        }).then(function (data) {
+            console.log(data);
+        })
+    }
+
+    function adder() {
+        fetch('http://localhost:3000/people', {
+            method: 'POST'
+            , body: JSON.stringify({
+                first: first.value
+                , last: last.value
+            })
+            , headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (res) {
+            return res.text();
+        }).then(function (data) {
+            console.log(data);
+            getter();
+        })
+    }
+</script>
+</body>
+</html>

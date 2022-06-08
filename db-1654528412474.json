@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "tester",
+      "name": "christian"
+    },
+    {
+      "title": "mr cupido",
+      "name": "papansin",
+      "id": 2
+    },
+    {
+      "title": "mr swabe",
+      "name": "hoyhoyhoy",
+      "id": 3
+    },
+    {
+      "title": "Jojo",
+      "name": "LANDS",
+      "id": 4
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "Content",
+      "postID": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

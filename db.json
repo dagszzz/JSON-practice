@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "tester",
+      "name": "christian"
+    },
+    {
+      "title": "mr cupido",
+      "name": "papansin",
+      "id": 2
+    },
+    {
+      "title": "mr swabe",
+      "name": "hoyhoyhoy",
+      "id": 3
+    },
+    {
+      "title": "Jojo",
+      "name": "LANDS",
+      "id": 4
+    },
+    {
+      "title": "Mr",
+      "name": "Laurence",
+      "id": 5
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "Content",
+      "postID": 1
+    }
+  ],
+  "people": {
+    "first": "Laurence",
+    "last": "Svekis"
+  }
+}
